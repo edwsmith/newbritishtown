@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="w3-theme-blue.css">
+<style>
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.bmac {
+  max-width:230px;
+  position:fixed;
+  bottom:30px;
+  right:-178px;
+}
+
+.bmac:hover {
+  transition: transform .2s ease;
+  transform:translatex(-178px);
+  -ms-transform:translatex(-178px);
+  -webkit-transform:translatex(-178px);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #2196f3;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #2196f3;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="w3-container w3-padding" style="color:#808080" id="myHeader">
+<div class="w3-container">
+  <div class="w3-content" style="max-width:300px;position:relative;padding:16px">
+  <img class="mySlides w3-animate-opacity" onclick="" src="logo.png" style="width:100%">
+</div>
+</header>
+
+
+<div class="w3-third w3-container">
+</div>
+<div class="w3-third w3-container">  
+  <div class="slidecontainer">
+    <p style="color:#808080;font-size:80%">*Due to the way the generator creates names, there's a chance that you'll come across a real place. Sorry about that.</p>
+    <p>Word before name probability: <span id="pre"></span>%</p>
+    <input type="range" min="0" max="100" value="20" step="10" class="slider" id="myRange">
+    <p>Word after name probability: <span id="post"></span>%</p>
+    <input type="range" min="0" max="100" value="20" step="10" class="slider" id="myRange2">
+    <p>Make it longer! <span id="ext"></span></p>
+    <input type="range" min="0" max="10" value="0" class="slider" id="myRange3">
+  </div>
+  <br>
+  <div class="w3-center">
+    <button class="w3-button w3-theme"
+            onclick="newName()">
+    Take me to a new town!</button>
+    <br>
+    <br>
+
+    <div class="w3-content" style="max-width:800px;position:relative">
+    <img class="mySlides w3-animate-opacity" src="map_.png" style="width:100%;box-shadow: 20px 20px 20px 20px white inset;">
+    <div class="w3-display-middle w3-center">
+    <p id="gen" style="color:#595e64;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></p>
+    </div>
+    <div>
+    </div>
+  </div>
+</div>
+<div class="w3-third w3-container">
+</div>
+
+<br>
+
+<a href="https://www.buymeacoffee.com/newbritishtown" target="_blank">
+<div class="w3-container">
+  <div class="bmac" style="max-width:230px;position:fixed;bottom:30px;right:-178px">
+  <img class="mySlides w3-animate-opacity" onclick="" src="bmac.svg" style="width:100%">
+</div>
+</a>
+
+<br>
+
+<script>
+var cName, cPref, cMidn, cSuff, cSufN, cRivr, i;
+
+var slider = document.getElementById("myRange");
+var slider2 = document.getElementById("myRange2");
+var slider3 = document.getElementById("myRange3");
+var iPre = document.getElementById("pre");
+var iPst = document.getElementById("post");
+var iExt = document.getElementById("ext");
+iPre.innerHTML = slider.value;
+iPst.innerHTML = slider2.value;
+iExt.innerHTML = slider3.value;
+
+slider.oninput = function() {
+  iPre.innerHTML = this.value;
+}
+
+slider2.oninput = function() {
+  iPst.innerHTML = this.value;
+}
+
+slider3.oninput = function() {
+  iExt.innerHTML = this.value;
+}
+
+cPreN = "Great ,High ,Little ,Upper ,Lower ,Royal ,West ,East ,North ,South ,Old ,New ,Beck ,St. ,Abbots ,Isle of ,Church ,Acton ,Bishops ,Kirby ,Kings ,Milton ,Long ";
+cPref = "Sand,Puckle,Sod,Dod,Brid,Wal,Wat,Brent,Il,Wim,Stud,Swan,Cam,Hoe,Yax,Sax,New,Col,Buck,Ox,Middle,Cul,Korf,Hart,Pen,Fram,Oak,Yar,Mil,Wood,Cocks,Best,Ug,Nord,Brom,Holly,Naw,Red,Bent,Crack,Wif,Shef,Brum,Grim,Scun,Lin,Thur,Thor,Thet,They,Than,Black,Tham,Cro,Ecc,Chol,Ches,Christ,Apple,Stock,Stok,Tot,Tar,Wyth,Snet,God,Wee,Elm,Mer,Paggle,Chid,Tid,Bi,Bletch,Bag,Hovis,Wig,Brix,Hol,Yeal,Lu,Ayles,Cad,Hore,Hors,Mud,Twert,Poo";
+cMidn  = "ling,ning,bor,hamp,les,field,le,ton,il,is,wif,er,mor,ock,don,mins,ble,";
+cSuff = "ton,sham,sby,by,field,bury,ley,gate,ow,ford,shot,down,low,ridge,holm,land,cote,stone,bridge,don,ster,wich,market,stock,stow,hill,ster,brough,pool,bourne,dle,burgh,borough,mouth,cliffe,head,burn,ough,water,combe,ing,thorpe,hope,ness,loo,grave,leigh,minster,low,stone,well,worth,wood,mere,holt,moor,all,port,town,kirk,dell,sea,house,acre,dale,church,slip,wrinkle,thwait,thwick,stead,ness";
+cSufN = " Mimms, Regis, Bay, Green, Bridge, Cross, End, Heath, Common, Wells, Keynes, Abbey, Creek, on sea, next the sea,-on-sea,-upon-,-under-,-on-,-by-the-Sea,-le-Street";
+cRivr = "Trent,Thames,Crouch,Tees,Lime,Tyne,Severn,Ouse,Dee,Tay,Nene,Wye,Avon,Stour,Aire,Ure,Eden,Taw,Exe,Derwent,Ribble,Cober,Newlyn,Kennel,Percuil,Par,Fowey,Looe,Seaton,Tavy";
+        
+cPreN = cPreN.split(",");
+cPref = cPref.split(",");
+cMidn = cMidn.split(",");
+cSuff = cSuff.split(",");
+cSufN = cSufN.split(",");
+cRivr = cRivr.split(",");
+
+function newName () {
+
+if (slider.value > Math.floor(Math.random() * 100)) {
+  cName = cPreN[Math.floor(Math.random() * cPreN.length)];
+} else {
+  cName = "";
+}
+
+cName = cName 
+      + cPref[Math.floor(Math.random() * cPref.length)];
+
+for (var i = 0; i < slider3.value; i++) {
+  cName = cName 
+        + cMidn[Math.floor(Math.random() * cMidn.length)];
+}
+
+cName = cName + cSuff[Math.floor(Math.random() * cSuff.length)];
+
+if (slider2.value > Math.floor(Math.random() * 100)) {
+  cName = cName + cSufN[Math.floor(Math.random() * cSufN.length)];
+}    
+
+if (cName.slice(-1) == "-") {
+  cName = cName + cRivr[Math.floor(Math.random() * cRivr.length)];
+}
+
+document.getElementById('gen').innerHTML = cName;
+}
+</script>
+
+</body>
+</html>
